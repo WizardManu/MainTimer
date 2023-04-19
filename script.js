@@ -10,7 +10,7 @@ let stopped = true;
 let timeInterval;
 
 function setup() {
-    createCanvas(500, 500);
+    createCanvas(400, 500);
 }
 
 function initialize() {
@@ -20,9 +20,14 @@ function initialize() {
   console.log('init')
 }
 
-function mousePressed() {
-  if (!stopped) {
-    score++
+function mouseReleased() {
+  if (!stopped){
+    if (timeElapsed > 2.5){
+      score++
+      if (score >= 10){
+        score = 0
+      };
+    };
     timeElapsed = 0
     return;
   }
@@ -35,7 +40,6 @@ function mousePressed() {
   lastScore = null;
   initialize();
   loop();
-  console.log('click')
 }
 
 function draw() {
@@ -73,9 +77,9 @@ function drawScene() {
   noStroke();
   fill(250);
   textAlign(CENTER);
-  textSize(80);
+  textSize(120);
   text(score, width/2, height/3);
 
   textAlign(CENTER);
-  text(`${(gameTime - timeElapsed)/10}s`, width/2, height/1.5);
+  text(`${(gameTime - timeElapsed)/10}s`, width/2, height/1.25);
 }
