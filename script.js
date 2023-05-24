@@ -24,9 +24,9 @@ function mouseReleased() {
   if (!stopped){
     if (timeElapsed > 2.5){
       score++
-      if (score >= 10){
-        score = 0
-      };
+      //if (score >= 10){
+      //  score = 0
+      //};
     };
     timeElapsed = 0
     return;
