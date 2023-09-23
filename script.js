@@ -3,8 +3,9 @@ let tick;
 let startTime;
 let timeElapsed;
 let lastScore;
+let runs;
 const gameTime = 100;
-
+runs = 0
 let alreadyPlayed = false;
 let stopped = true;
 let timeInterval;
@@ -24,9 +25,10 @@ function mouseReleased() {
   if (!stopped){
     if (timeElapsed > 2.5){
       score++
-      //if (score >= 10){
-      //  score = 0
-      //};
+      if (score >= 21){
+        score = 0
+        runs ++
+      };
     };
     timeElapsed = 0
     return;
@@ -63,7 +65,11 @@ function draw() {
     stopped = true;
     clearInterval(timeInterval);
   }
-  background(50);
+  if (score != 0){
+    background(50);}
+  else{
+    background("green");
+  }
   drawScene()
 }
 
@@ -78,7 +84,7 @@ function drawScene() {
   fill(250);
   textAlign(CENTER);
   textSize(120);
-  text(score, width/2, height/3);
+  text((score+"("+runs+")"), width/2, height/3);
 
   textAlign(CENTER);
   text(`${(gameTime - timeElapsed)/10}s`, width/2, height/1.25);
