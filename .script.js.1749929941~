@@ -1,6 +1,6 @@
 let score;
 let tick;
-let startTime
+let startTime:
 let timeElapsed;
 let lastScore;
 let runs;
