@@ -3,34 +3,42 @@ let tick;
 let startTime
 let timeElapsed;
 let lastScore;
-let runs;
-const gameTime = 100;
-runs = 0
+let runs = 0;
+let gameTime = 1000;
 let alreadyPlayed = false;
 let stopped = true;
 let timeInterval;
+let running = false;
 
 function setup() {
-    createCanvas(400, 500);
+    createCanvas(600, 500);
 }
 
 function initialize() {
   timeInterval = setInterval(() => {
-    timeElapsed++;
+    if (running == true) {
+      timeElapsed--;
+    };
   }, 100);
   console.log('init')
 }
-
+function mouseWheel(event) {
+  //move the square according to the vertical scroll amount
+  score -= event.delta/10;
+  //uncomment to block page scrolling
+  //return false;
+}
+function keyPressed(){
+  if (running == true){
+    running = false;
+  }
+  else{
+    running = true;
+  }
+}
 function mouseReleased() {
   if (!stopped){
-    if (timeElapsed > 2.5){
-      score++
-      if (score >= 21){
-        score = 0
-        runs ++
-      };
-    };
-    timeElapsed = 0
+  timeElapsed += score
     return;
   }
   stopped = false;
@@ -61,14 +69,10 @@ function draw() {
     return;
   }
   tick++;
-  if (timeElapsed > gameTime) {
-    stopped = true;
-    clearInterval(timeInterval);
-  }
-  if (score != 0){
+  if (timeElapsed >= 0){
     background(50);}
   else{
-    background("green");
+    background("red");
   }
   drawScene()
 }
@@ -84,8 +88,11 @@ function drawScene() {
   fill(250);
   textAlign(CENTER);
   textSize(120);
-  text((score+"("+runs+")"), width/2, height/3);
+  text((score/10), width/2, height/3);
+  if(timeElapsed > 0){minutes = floor(timeElapsed/600);}
+  else{minutes = ceil(timeElapsed/600);}
+  seconds = (timeElapsed - minutes*600)/10;
 
   textAlign(CENTER);
-  text(`${(gameTime - timeElapsed)/10}s`, width/2, height/1.25);
+  text(`${minutes}m${seconds}s`, width/2, height/1.25);
 }
