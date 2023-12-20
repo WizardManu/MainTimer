@@ -9,22 +9,40 @@ let alreadyPlayed = false;
 let stopped = true;
 let timeInterval;
 let running = false;
+let mySound;
+let todaysDate = new Date()
+let timerStart;
+let timerCurrent;
+let counter = 0;
+let lastTimestamp = 0;
+const targetFPS = 10;
+startTime = new Date().getTime();
+//function preload() {
+//  soundFormats('mp3', 'ogg');
+//  mySound = loadSound('ringsound.mp3');
+//}
 
 function setup() {
     createCanvas(600, 500);
 }
 
+
 function initialize() {
   timeInterval = setInterval(() => {
-    if (running == true) {
-      timeElapsed--;
-    };
-  }, 100);
-  console.log('init')
+    const currentTime = new Date().getTime();
+    const elapsedTime = currentTime - startTime;
+    startTime = new Date().getTime();
+    console.log(elapsedTime/100);
+    if(running == true){
+    timeElapsed -= elapsedTime/100;}
+    }, 100);
+  
 }
+
+
 function mouseWheel(event) {
   //move the square according to the vertical scroll amount
-  score -= event.delta/10;
+  score -= event.delta/10 * 15;
   //uncomment to block page scrolling
   //return false;
 }
@@ -34,7 +52,9 @@ function keyPressed(){
   }
   else{
     running = true;
+    console.log('going');
   }
+//  mySound.play()
 }
 function mouseReleased() {
   if (!stopped){
@@ -80,18 +100,17 @@ function draw() {
 function drawScene() {
   noStroke();
   fill(180);
-
-  if (lastScore && tick - lastScore < 40) {
-    fill(lerpColor(color(173, 235, 177), color(100), (tick - lastScore) / 40));
-  }
   noStroke();
   fill(250);
   textAlign(CENTER);
   textSize(120);
-  text((score/10), width/2, height/3);
+  if(score > 0){minutes = floor(score/600);}
+  else{minutes = ceil(score/600);}
+  seconds = (score - minutes*600)/10;
+  text(` ${minutes}m${seconds}s`, width/2, height/3);
   if(timeElapsed > 0){minutes = floor(timeElapsed/600);}
   else{minutes = ceil(timeElapsed/600);}
-  seconds = (timeElapsed - minutes*600)/10;
+  seconds = floor(timeElapsed - minutes*600)/10;
 
   textAlign(CENTER);
   text(`${minutes}m${seconds}s`, width/2, height/1.25);
