@@ -8,7 +8,7 @@ let gameTime = 1000;
 let alreadyPlayed = false;
 let stopped = true;
 let timeInterval;
-let running = false;
+let running = 0;
 let mySound;
 let todaysDate = new Date()
 let timerStart;
@@ -32,28 +32,40 @@ function initialize() {
     const currentTime = new Date().getTime();
     const elapsedTime = currentTime - startTime;
     startTime = new Date().getTime();
-    console.log(elapsedTime/100);
-    if(running == true){
+    if(running > 0){
     timeElapsed -= elapsedTime/100;}
-    }, 100);
+    }, running);
   
 }
 
 
 function mouseWheel(event) {
   //move the square according to the vertical scroll amount
-  score -= event.delta/10 * 15;
+  score -= event.delta/10 * 100;
   //uncomment to block page scrolling
   //return false;
 }
 function keyPressed(){
-  if (running == true){
-    running = false;
+  console.log(key);
+  if (key === 'Enter') {
+    if (running > 0){
+      running = 0;
+    }
+    else{
+      running = 100;
+      console.log('going');
+    }
   }
-  else{
-    running = true;
-    console.log('going');
+  if (key === 'Shift') {
+    if (running > 0){
+      running = 0;
+    }
+    else{
+      running = 75;
+      console.log('going');
+    }
   }
+
 //  mySound.play()
 }
 function mouseReleased() {
